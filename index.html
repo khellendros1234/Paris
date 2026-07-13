@@ -408,6 +408,15 @@ body {
 .artwork-info { padding: 8px 10px 10px; }
 .artwork-name { font-size: 12px; font-weight: bold; color: #1a3a5c; line-height: 1.4; }
 .artwork-artist { font-size: 11px; color: #aaa; margin-top: 2px; }
+/* checklist */
+.cl-group { background:white; border-radius:14px; box-shadow:0 1px 10px rgba(0,0,0,0.07); margin-bottom:16px; overflow:hidden; }
+.cl-group-title { background:#f5efe6; padding:12px 16px; font-size:13px; font-weight:700; color:#1a3a5c; display:flex; align-items:center; gap:8px; }
+.cl-item { display:flex; align-items:flex-start; gap:12px; padding:12px 16px; border-top:1px solid #f5efe6; cursor:pointer; transition:background 0.15s; }
+.cl-item:hover { background:#fdfaf7; }
+.cl-item input[type=checkbox] { width:18px; height:18px; margin-top:1px; flex-shrink:0; accent-color:#c8864a; cursor:pointer; }
+.cl-item label { font-size:13px; color:#333; line-height:1.5; cursor:pointer; flex:1; }
+.cl-item label small { display:block; color:#aaa; font-size:11px; margin-top:2px; }
+.cl-done label { color:#bbb; text-decoration:line-through; }
 </style>
 </head>
 <body>
@@ -471,6 +480,14 @@ body {
     <div class="tab" onclick="switchTab('d802', this)">
       <span class="tab-date">8/2</span>
       <span class="tab-label">返台</span>
+    </div>
+    <div class="tab" onclick="switchTab('meals', this)">
+      <span class="tab-date">🍽️</span>
+      <span class="tab-label">每日餐食</span>
+    </div>
+    <div class="tab" onclick="switchTab('checklist', this)">
+      <span class="tab-date">✅</span>
+      <span class="tab-label">出發清單</span>
     </div>
   </div>
 </div>
@@ -646,13 +663,13 @@ body {
     <div class="booking-grid">
       <div class="booking-card">
         <div class="b-icon">🚗</div>
-        <div><div class="b-name">竹北→桃園 機場接送預約</div><div class="b-date">⚠️ 7/6 前完成（最緊急）</div></div>
-        <span class="b-badge b-pending">⏳ 待辦</span>
+        <div><div class="b-name">竹北→桃園 機場接送預約</div><div class="b-date">7/23 · 14:50 竹北家中出發</div></div>
+        <span class="b-badge b-done">✅ 已完成</span>
       </div>
       <div class="booking-card">
         <div class="b-icon">🏛️</div>
-        <div><div class="b-name">羅浮宮細項研究</div><div class="b-date">⚠️ 7/9 前完成</div></div>
-        <span class="b-badge b-pending">⏳ 待辦</span>
+        <div><div class="b-name">羅浮宮細項研究</div><div class="b-date">完成</div></div>
+        <span class="b-badge b-done">✅ 已完成</span>
       </div>
       <div class="booking-card">
         <div class="b-icon">🎨</div>
@@ -666,8 +683,8 @@ body {
       </div>
       <div class="booking-card">
         <div class="b-icon">🎠</div>
-        <div><div class="b-name">迪士尼行程研究 + App 下載</div><div class="b-date">⚠️ 7/15 前完成</div></div>
-        <span class="b-badge b-pending">⏳ 待辦</span>
+        <div><div class="b-name">迪士尼行程研究 + App 下載</div><div class="b-date">完成</div></div>
+        <span class="b-badge b-done">✅ 已完成</span>
       </div>
       <div class="booking-card">
         <div class="b-icon">🚉</div>
@@ -683,6 +700,16 @@ body {
         <div class="b-icon">👑</div>
         <div><div class="b-name">凡爾賽宮訂票</div><div class="b-date">⚠️ 出發前一週看天氣再訂</div></div>
         <span class="b-badge b-pending">⏳ 待辦</span>
+      </div>
+      <div class="booking-card">
+        <div class="b-icon">🍽️</div>
+        <div><div class="b-name">蒙馬特午餐餐廳</div><div class="b-date">7/27 · Rue Lepic / Rue des Abbesses 周邊</div></div>
+        <span class="b-badge b-pending">⏳ 待選</span>
+      </div>
+      <div class="booking-card">
+        <div class="b-icon">🍷</div>
+        <div><div class="b-name">塞納河畔晚餐餐廳</div><div class="b-date">7/29 · 18:30 · 遊船前 · Quai d'Orsay 周邊</div></div>
+        <span class="b-badge b-pending">⏳ 待選</span>
       </div>
     </div>
   </div>
@@ -731,20 +758,24 @@ body {
       <div class="tl-item">
         <div class="tl-time">06:30</div>
         <div class="tl-dot dot-key"></div>
-        <div class="tl-header"><div class="tl-emoji">🛬</div><div class="tl-title">抵達巴黎 · 戴高樂機場T2</div></div>
-        <div class="tl-desc">入境、提行李，叫車前往 Moxy Val d'Europe。</div>
+        <div class="tl-header"><div class="tl-emoji">🛬</div><div class="tl-title">抵達巴黎 · 戴高樂機場T2 <small style="font-weight:normal;color:#999">Aéroport Paris-Charles de Gaulle T2</small></div></div>
+        <div class="tl-desc">
+          入境、提行李，出 T2 入境大廳跟著「VTC / Uber」指標走到叫車區<br>
+          🚐 叫 <b>Uber Van</b>（3 大箱 + 2 人）→ <b>Moxy Val d'Europe</b>，約 40–50 分鐘，約 <b>~€65</b><br>
+          💡 計程車跳表不透明，建議用 Uber 事先確認價格
+        </div>
       </div>
       <div class="tl-item">
         <div class="tl-time">09:30</div>
         <div class="tl-dot"></div>
-        <div class="tl-header"><div class="tl-emoji">🏨</div><div class="tl-title">抵達 Moxy · Check-in 或寄放行李</div></div>
+        <div class="tl-header"><div class="tl-emoji">🏨</div><div class="tl-title">抵達 Moxy Val d'Europe · Check-in 或寄放行李</div></div>
         <div class="tl-desc">稍作梳洗換衣，步行即可到達 Outlet。</div>
       </div>
       <div class="tl-item">
         <div class="tl-time">10:30</div>
         <div class="tl-dot dot-key"></div>
         <div class="tl-header"><div class="tl-emoji">🛍️</div><div class="tl-title">La Vallée Village Outlet</div></div>
-        <div class="tl-desc">歐洲精品 Outlet，步行 5 分鐘可達。輕鬆逛街調時差，累了隨時回飯店。</div>
+        <div class="tl-desc">歐洲精品 Outlet，步行 5 分鐘可達。輕鬆逛街調時差，累了隨時回飯店。<br>🕗 營業至 <b>20:00 關門</b></div>
       </div>
       <div class="tl-item">
         <div class="tl-time">13:00</div>
@@ -761,8 +792,8 @@ body {
       <div class="tl-item">
         <div class="tl-time">18:00</div>
         <div class="tl-dot"></div>
-        <div class="tl-header"><div class="tl-emoji">🍜</div><div class="tl-title">附近吃晚餐</div></div>
-        <div class="tl-desc">Val d'Europe 商場或 Outlet 餐廳，不需要遠走。</div>
+        <div class="tl-header"><div class="tl-emoji">🍜</div><div class="tl-title">附近吃晚餐 · 順路採買早餐</div></div>
+        <div class="tl-desc">Val d'Europe 商場或 Outlet 餐廳，不需要遠走。<br>🛒 晚餐後順路去超市採買明天迪士尼的早餐食物（麵包、優格、飲料等）<br>⚠️ <b>Moxy 房間無冰箱</b>，買常溫食品為主，不要買需要冷藏的</div>
       </div>
       <div class="tl-item">
         <div class="tl-time">23:00</div>
@@ -796,7 +827,13 @@ body {
         <div class="tl-time">09:00</div>
         <div class="tl-dot"></div>
         <div class="tl-header"><div class="tl-emoji">🚉</div><div class="tl-title">搭 RER A 前往迪士尼</div></div>
-        <div class="tl-desc">Val d'Europe 站搭 RER A，一站直達 Marne-la-Vallée/Chessy，約 5 分鐘。</div>
+        <div class="tl-desc">
+          🚶 Moxy 步行約 8 分鐘 → <b>Val d'Europe 站（RER A）</b><br>
+          🔴 搭 <b>RER A 方向 Marne-la-Vallée / Chessy</b>，1 站，約 3 分鐘<br>
+          📍 終點站 <b>Marne-la-Vallée / Chessy 站</b>下車<br>
+          🚶 出站即正對 <b>Disneyland Park 入口</b>，步行 2 分鐘<br>
+          ⏱ 總計約 15 分鐘
+        </div>
       </div>
       <div class="tl-item">
         <div class="tl-time">09:30</div>
@@ -810,18 +847,21 @@ body {
         <div class="tl-dot"></div>
         <div class="tl-header"><div class="tl-emoji">🐢</div><div class="tl-title">Crush's Coaster · 優先衝</div></div>
         <div class="tl-desc">全園最熱門、排隊最長，開園第一個衝。海底總動員主題旋轉雲霄飛車。</div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Crush%E2%80%99s_Coaster%2C_Worlds_of_Pixar%2C_Disney_Adventure_World%2C_Disneyland_Paris.jpg/500px-Crush%E2%80%99s_Coaster%2C_Worlds_of_Pixar%2C_Disney_Adventure_World%2C_Disneyland_Paris.jpg" alt="Crush's Coaster" loading="lazy" style="width:100%;max-width:320px;border-radius:8px;margin-top:8px">
       </div>
       <div class="tl-item">
         <div class="tl-time">10:30</div>
         <div class="tl-dot"></div>
         <div class="tl-header"><div class="tl-emoji">🐀</div><div class="tl-title">Ratatouille: The Adventure</div></div>
         <div class="tl-desc">縮小成老鼠視角穿越料理鼠王場景的 4D 軌道車，適合所有人。</div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Ratatouille_%2851414590388%29.jpg/500px-Ratatouille_%2851414590388%29.jpg" alt="Ratatouille: The Adventure" loading="lazy" style="width:100%;max-width:320px;border-radius:8px;margin-top:8px">
       </div>
       <div class="tl-item">
         <div class="tl-time">12:00</div>
         <div class="tl-dot"></div>
-        <div class="tl-header"><div class="tl-emoji">❄️</div><div class="tl-title">Frozen 園區逛逛</div></div>
+        <div class="tl-header"><div class="tl-emoji">❄️</div><div class="tl-title">Frozen 園區逛逛 <small style="font-weight:normal;color:#999">World of Frozen</small></div></div>
         <div class="tl-desc">不排設施，拍照逛園區為主（香港已玩過設施）。</div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/A_Celebration_in_Arendelle%2C_World_of_Frozen%2C_Disney_Adventure_World%2C_Disneyland_Paris.jpg/500px-A_Celebration_in_Arendelle%2C_World_of_Frozen%2C_Disney_Adventure_World%2C_Disneyland_Paris.jpg" alt="World of Frozen" loading="lazy" style="width:100%;max-width:320px;border-radius:8px;margin-top:8px">
       </div>
       <div class="tl-item">
         <div class="tl-time">13:00</div>
@@ -832,8 +872,22 @@ body {
       <div class="tl-item">
         <div class="tl-time">14:00</div>
         <div class="tl-dot dot-key"></div>
-        <div class="tl-header"><div class="tl-emoji">🏰</div><div class="tl-title">移動至 Disneyland Park</div></div>
-        <div class="tl-desc">兩園步行相連直接過去。Indiana Jones、Big Thunder Mountain、Star Wars Hyperspace Mountain。</div>
+        <div class="tl-header"><div class="tl-emoji">🏰</div><div class="tl-title">移動至 Disneyland Park <small style="font-weight:normal;color:#999">Parc Disneyland</small></div></div>
+        <div class="tl-desc">兩園步行相連直接過去。</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+          <div style="flex:1;min-width:140px">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Indiana_Jones_Ride_%285977961706%29.jpg/500px-Indiana_Jones_Ride_%285977961706%29.jpg" alt="Indiana Jones" loading="lazy" style="width:100%;border-radius:8px">
+            <div style="font-size:11px;color:#999;margin-top:4px;text-align:center">🎩 Indiana Jones and the Temple of Peril</div>
+          </div>
+          <div style="flex:1;min-width:140px">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Disneyland_Paris_Frontierland_panorama.jpg/500px-Disneyland_Paris_Frontierland_panorama.jpg" alt="Big Thunder Mountain" loading="lazy" style="width:100%;border-radius:8px">
+            <div style="font-size:11px;color:#999;margin-top:4px;text-align:center">⛰️ Big Thunder Mountain</div>
+          </div>
+          <div style="flex:1;min-width:140px">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Hyperspace_Mountain_%2827766070223%29.jpg/500px-Hyperspace_Mountain_%2827766070223%29.jpg" alt="Hyperspace Mountain" loading="lazy" style="width:100%;border-radius:8px">
+            <div style="font-size:11px;color:#999;margin-top:4px;text-align:center">⭐ Star Wars Hyperspace Mountain</div>
+          </div>
+        </div>
       </div>
       <div class="tl-item">
         <div class="tl-time">17:00</div>
@@ -859,6 +913,18 @@ body {
         <div class="tl-header"><div class="tl-emoji">🎆</div><div class="tl-title">夜間煙火秀 · 生日收尾</div></div>
         <div class="tl-desc">迪士尼城堡前煙火，生日最完美的收尾。確切時間出發前在官方 App 確認。</div>
       </div>
+      <div class="tl-item">
+        <div class="tl-time">22:30</div>
+        <div class="tl-dot"></div>
+        <div class="tl-header"><div class="tl-emoji">🚉</div><div class="tl-title">回程 · RER A 返回 Moxy</div></div>
+        <div class="tl-desc">
+          🚶 出園步行 2 分鐘 → <b>Marne-la-Vallée / Chessy 站</b><br>
+          🔴 搭 <b>RER A 方向 Paris / Cergy / Poissy</b>，1 站 → <b>Val d'Europe 站</b>下車<br>
+          ⚠️ 煙火結束人潮多，月台擁擠請注意隨身物品<br>
+          🚶 出站步行約 8 分鐘回 Moxy<br>
+          ⏱ 總計約 20 分鐘
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -871,39 +937,73 @@ body {
       <div class="day-hero-info">
         <div class="day-hero-title">進駐巴黎市區 · 鐵塔初見</div>
         <div class="day-hero-stay">🏠 Dupleix Airbnb · 15區（今起7晚）</div>
-        <div class="day-hero-tags"><span class="tag tag-gold">🗼 鐵塔之夜</span><span class="tag tag-warn">⚠️ 19:00前Check-in</span></div>
+        <div class="day-hero-tags"><span class="tag tag-gold">🗼 鐵塔之夜</span><span class="tag tag-warn">⚠️ 19:00前Check-in</span><span class="tag tag-gold">⏰ 起床 10:00</span></div>
       </div>
     </div>
     <div class="timeline">
       <div class="tl-item">
-        <div class="tl-time">12:00</div>
+        <div class="tl-time">10:00</div>
         <div class="tl-dot"></div>
-        <div class="tl-header"><div class="tl-emoji">🧳</div><div class="tl-title">Moxy 退房</div></div>
-        <div class="tl-desc">Val d'Europe附近吃午餐，搭RER A進巴黎市區。</div>
+        <div class="tl-header"><div class="tl-emoji">⏰</div><div class="tl-title">起床 · 梳化準備</div></div>
+        <div class="tl-desc">預留 1.5 小時梳化，11:30 前準備好，悠閒吃個早餐再退房。</div>
       </div>
       <div class="tl-item">
-        <div class="tl-time">15:00</div>
+        <div class="tl-time">12:00</div>
+        <div class="tl-dot"></div>
+        <div class="tl-header"><div class="tl-emoji">🧳</div><div class="tl-title">Moxy 退房 · Val d'Europe 午餐</div></div>
+        <div class="tl-desc">退房後行李帶著，在 Val d'Europe 商場輕鬆吃午餐。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">13:00</div>
+        <div class="tl-dot"></div>
+        <div class="tl-header"><div class="tl-emoji">🚉</div><div class="tl-title">出發進巴黎市區 <small style="font-weight:normal;color:#999">RER A → Gare de Lyon + Uber</small></div></div>
+        <div class="tl-desc">
+          🔵 <b>方案 A（省錢）～€30</b><br>
+          🚶 步行 8 分鐘 → <b>Val d'Europe 站（RER A）</b><br>
+          🔴 搭 <b>RER A 方向 Paris</b>，約 30 分鐘 → <b>Gare de Lyon</b> 下車（有電梯）<br>
+          🚗 叫 <b>Uber XL / Van</b>，Gare de Lyon → Airbnb，約 15–20 分鐘，~€15–20<br>
+          ⚠️ 出發前用 <b>RATP App</b> 確認 Gare de Lyon 電梯正常運作<br>
+          ⏱ 總計約 55 分鐘<br><br>
+          🟡 <b>方案 B（直達無壓力）～€85</b><br>
+          🚐 在 Moxy 門口直接叫 <b>Uber Van</b>，直達 Airbnb，約 50 分鐘<br>
+          💡 若當天電梯故障、或想保留體力給晚上鐵塔，選此方案
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">14:05</div>
+        <div class="tl-dot"></div>
+        <div class="tl-header"><div class="tl-emoji">☕</div><div class="tl-title">附近咖啡館稍等 · 等待 check-in</div></div>
+        <div class="tl-desc">行李先放在門口或寄放，附近找個咖啡館坐一下，等 14:30 check-in。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">14:30</div>
         <div class="tl-dot dot-key"></div>
-        <div class="tl-header"><div class="tl-emoji">🏠</div><div class="tl-title">Airbnb Check-in · 12 Rue de Lourmel</div></div>
-        <div class="tl-desc">安頓行李，超市採買（公寓樓下即有）。</div>
+        <div class="tl-header"><div class="tl-emoji">🏠</div><div class="tl-title">Airbnb Check-in · 12 Rue de Lourmel <small style="font-weight:normal;color:#999">M6 Dupleix</small></div></div>
+        <div class="tl-desc">安頓行李，梳洗換衣，準備迎接蜜月第一個巴黎傍晚。</div>
         <div class="tl-tip">⚠️ 週日19:00後入住加€50，22:00後加€75，務必準時</div>
       </div>
       <div class="tl-item">
-        <div class="tl-time">16:30</div>
+        <div class="tl-time">15:30</div>
         <div class="tl-dot"></div>
-        <div class="tl-header"><div class="tl-emoji">🌉</div><div class="tl-title">比爾克姆橋</div></div>
+        <div class="tl-header"><div class="tl-emoji">🌉</div><div class="tl-title">比爾克姆橋 <small style="font-weight:normal;color:#999">Pont de Bir-Hakeim</small></div></div>
         <div class="tl-desc">步行5分鐘，《全面啟動》取景地，拱廊＋鐵塔背景，人少景美。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">16:15</div>
+        <div class="tl-dot"></div>
+        <div class="tl-header"><div class="tl-emoji">🛒</div><div class="tl-title">回公寓 · 超市採買野餐食材</div></div>
+        <div class="tl-desc">步行回公寓，順路進樓下超市採買：麵包、起司、火腿、紅酒。輕裝出門最方便。</div>
       </div>
       <div class="tl-item">
         <div class="tl-time">17:30</div>
         <div class="tl-dot dot-key"></div>
-        <div class="tl-header"><div class="tl-emoji">🧺</div><div class="tl-title">戰神廣場草坪野餐</div></div>
-        <div class="tl-desc">鐵塔腳下草坪野餐，天色仍亮（日落21:30）。超市採買麵包、起司、火腿、紅酒，在草坪上迎接巴黎的第一個黃昏。</div>
+        <div class="tl-header"><div class="tl-emoji">🧺</div><div class="tl-title">戰神廣場草坪野餐 <small style="font-weight:normal;color:#999">Champ de Mars</small></div></div>
+        <div class="tl-desc">鐵塔腳下草坪野餐，天色仍亮（日落21:30）。在草坪上迎接巴黎的第一個黃昏。</div>
       </div>
       <div class="tl-item">
         <div class="tl-time">20:00</div>
         <div class="tl-dot dot-key"></div>
-        <div class="tl-header"><div class="tl-emoji">🗼</div><div class="tl-title">艾菲爾鐵塔二樓 + 香檳 ✅ 已訂</div></div>
+        <div class="tl-header"><div class="tl-emoji">🗼</div><div class="tl-title">艾菲爾鐵塔二樓 + 香檳 ✅ 已訂 <small style="font-weight:normal;color:#999">Tour Eiffel</small></div></div>
         <div class="tl-desc">電梯上二樓，領取香檳。<br>20:00 入場 → 21:30 夕陽沉入巴黎 → 22:00 整點閃燈<br>蜜月第一晚，在鐵塔上乾杯。</div>
       </div>
       <div class="tl-item">
@@ -950,7 +1050,7 @@ body {
       <div class="tl-item">
         <div class="tl-time">12:30</div>
         <div class="tl-dot dot-key"></div>
-        <div class="tl-header"><div class="tl-emoji">⛪</div><div class="tl-title">聖心堂 Sacré-Cœur · 搭纜車上山</div></div>
+        <div class="tl-header"><div class="tl-emoji">⛪</div><div class="tl-title">聖心堂 · 搭纜車上山 <small style="font-weight:normal;color:#999">Basilique du Sacré-Cœur · Funiculaire de Montmartre</small></div></div>
         <div class="tl-desc">搭纜車（Funiculaire）上山省體力，用地鐵票即可。白色圓頂教堂免費入場，俯瞰巴黎全景。<br>⚠️ 走纜車入口，避開台階旁強行綁手環的詐騙</div>
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Basilique_du_Sacr%C3%A9-C%C5%93ur_de_Montmartre_-_Paris_-_GT-01_-_2024.jpg/500px-Basilique_du_Sacr%C3%A9-C%C5%93ur_de_Montmartre_-_Paris_-_GT-01_-_2024.jpg" alt="聖心堂" loading="lazy" style="width:100%;max-width:320px;border-radius:8px;margin-top:8px">
         <div class="tl-tip" style="margin-top:8px;background:#fff3cd;border-left:3px solid #e0a800;padding:10px 12px;border-radius:6px;font-size:12px;color:#856404">
@@ -967,6 +1067,17 @@ body {
         <div class="tl-dot"></div>
         <div class="tl-header"><div class="tl-emoji">🎨</div><div class="tl-title">畫家廣場 Place du Tertre</div></div>
         <div class="tl-desc">藝術家聚集的老廣場，可請畫家現場畫肖像。周邊餐廳偏貴，往小巷子走找午餐。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">13:00</div>
+        <div class="tl-dot dot-warn"></div>
+        <div class="tl-header"><div class="tl-emoji">🍽️</div><div class="tl-title">蒙馬特午餐 ⚠️ 待選餐廳 <small style="font-weight:normal;color:#999">Montmartre</small></div></div>
+        <div class="tl-desc">
+          ⚠️ <b>尚未選定餐廳，出發前請確認</b><br>
+          📍 避開 Place du Tertre 正面餐廳（觀光客陷阱，價高質普）<br>
+          💡 推薦往 <b>Rue Lepic</b> 或 <b>Rue des Abbesses</b> 找小館子，cp值高<br>
+          🥐 選項：法式小酒館 Bistrot、可麗餅攤、三明治帶走邊走邊吃
+        </div>
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Butte_Montmartre%2C_Place_du_Tertre%2C_Paris.jpg/500px-Butte_Montmartre%2C_Place_du_Tertre%2C_Paris.jpg" alt="Place du Tertre" loading="lazy" style="width:100%;max-width:320px;border-radius:8px;margin-top:8px">
       </div>
       <div class="tl-item">
@@ -979,7 +1090,7 @@ body {
       <div class="tl-item">
         <div class="tl-time">15:00</div>
         <div class="tl-dot"></div>
-        <div class="tl-header"><div class="tl-emoji">🌸</div><div class="tl-title">La Maison Rose · Rue de l'Abreuvoir</div></div>
+        <div class="tl-header"><div class="tl-emoji">🌸</div><div class="tl-title">粉紅小屋 · 巴黎最美街道 <small style="font-weight:normal;color:#999">La Maison Rose · Rue de l'Abreuvoir</small></div></div>
         <div class="tl-desc">粉紅小屋（Emily in Paris 取景地）拍照，沿「巴黎最美街道」Rue de l'Abreuvoir 往下走，途經 Dalida 廣場。</div>
       </div>
       <div class="tl-item">
@@ -991,7 +1102,7 @@ body {
       <div class="tl-item">
         <div class="tl-time">16:30</div>
         <div class="tl-dot"></div>
-        <div class="tl-header"><div class="tl-emoji">🎡</div><div class="tl-title">紅磨坊 Moulin Rouge · 外觀拍照</div></div>
+        <div class="tl-header"><div class="tl-emoji">🎡</div><div class="tl-title">紅磨坊外觀拍照 <small style="font-weight:normal;color:#999">Moulin Rouge · M2 Blanche</small></div></div>
         <div class="tl-desc">山腳下收尾，紅色風車外觀打卡，搭 Line 2 Blanche 站離開。</div>
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Moulin_Rouge_at_night_pic1.jpg/500px-Moulin_Rouge_at_night_pic1.jpg" alt="紅磨坊" loading="lazy" style="width:100%;max-width:320px;border-radius:8px;margin-top:8px">
       </div>
@@ -1001,6 +1112,18 @@ body {
         <div class="tl-header"><div class="tl-emoji">🏠</div><div class="tl-title">最晚 17:00 離開蒙馬特 · 返回公寓</div></div>
         <div class="tl-desc">回程搭地鐵：Blanche（Line 2，1站）→ Pigalle 換 Line 12 → Montparnasse-Bienvenüe 換 Line 6 → Dupleix，約 30–35 分鐘。<br>💡 17:00 是下班尖峰，地鐵會擠，若腳太痠可考慮叫 Uber（約 €12–15，但可能塞車 35–45 分鐘）</div>
         <div class="tl-tip">⚠️ 明天04:00化妝師到府！今晚務必22:00前就寢</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">18:00</div>
+        <div class="tl-dot dot-key"></div>
+        <div class="tl-header"><div class="tl-emoji">💐</div><div class="tl-title">Airbnb 附近花店 · 買婚紗用鮮花 <small style="font-weight:normal;color:#999">Fleuriste · Rue du Commerce / Dupleix</small></div></div>
+        <div class="tl-desc">
+          明天婚紗拍攝道具，今晚提前買好。<br>
+          🌹 建議選：玫瑰、牡丹、或白色花束（不易掉落、好拿）<br>
+          📍 推薦街道：<b>Rue du Commerce</b>（公寓步行5分鐘，有數間街邊花舖）<br>
+          💧 買回後插水、放陰涼處，隔天早上仍新鮮<br>
+          ⚠️ 花店約 19:30–20:00 關門，18:00 出發有充足時間挑選
+        </div>
       </div>
     </div>
     <div style="margin-top:28px">
@@ -1040,8 +1163,8 @@ body {
       <div class="tl-item">
         <div class="tl-time">06:30</div>
         <div class="tl-dot dot-key"></div>
-        <div class="tl-header"><div class="tl-emoji">👰</div><div class="tl-title">白紗 · 鐵塔區拍攝</div></div>
-        <div class="tl-desc">日出黃金光配白紗，最經典的巴黎婚紗畫面。<br>比爾克姆橋 → 戰神廣場草坪 → 投卡德羅廣場</div>
+        <div class="tl-header"><div class="tl-emoji">👰</div><div class="tl-title">白紗 · 鐵塔區拍攝 <small style="font-weight:normal;color:#999">Tour Eiffel · Pont de Bir-Hakeim · Trocadéro</small></div></div>
+        <div class="tl-desc">日出黃金光配白紗，最經典的巴黎婚紗畫面。<br>比爾克姆橋（Pont de Bir-Hakeim）→ 戰神廣場草坪（Champ de Mars）→ 投卡德羅廣場（Esplanade du Trocadéro）</div>
       </div>
       <div class="tl-item">
         <div class="tl-time">08:00</div>
@@ -1052,7 +1175,7 @@ body {
       <div class="tl-item">
         <div class="tl-time">09:00</div>
         <div class="tl-dot dot-key"></div>
-        <div class="tl-header"><div class="tl-emoji">❤️</div><div class="tl-title">紅紗 · 亞歷山大三世橋 + 咖啡廳</div></div>
+        <div class="tl-header"><div class="tl-emoji">❤️</div><div class="tl-title">紅紗 · 亞歷山大三世橋 + 咖啡廳 <small style="font-weight:normal;color:#999">Pont Alexandre III</small></div></div>
         <div class="tl-desc">金色燈柱配紅紗，視覺張力最強的組合。</div>
       </div>
       <div class="tl-item">
@@ -1070,8 +1193,8 @@ body {
       <div class="tl-item">
         <div class="tl-time">18:30</div>
         <div class="tl-dot dot-key"></div>
-        <div class="tl-header"><div class="tl-emoji">🖤</div><div class="tl-title">黑紗 · 羅浮宮拍攝</div></div>
-        <div class="tl-desc">米白石牆配黑紗輪廓鮮明，夜間燈光加持。<br>玻璃金字塔 → Galerie Vivienne玻璃拱廊 → 皇家宮殿</div>
+        <div class="tl-header"><div class="tl-emoji">🖤</div><div class="tl-title">黑紗 · 羅浮宮拍攝 <small style="font-weight:normal;color:#999">Musée du Louvre</small></div></div>
+        <div class="tl-desc">米白石牆配黑紗輪廓鮮明，夜間燈光加持。<br>玻璃金字塔（Pyramide du Louvre）→ Galerie Vivienne 玻璃拱廊 → 皇家宮殿（Palais-Royal）</div>
       </div>
       <div class="tl-item">
         <div class="tl-time">20:45</div>
@@ -1111,7 +1234,7 @@ body {
       <div class="tl-item">
         <div class="tl-time">13:30</div>
         <div class="tl-dot dot-key"></div>
-        <div class="tl-header"><div class="tl-emoji">🎨</div><div class="tl-title">奧賽美術館</div></div>
+        <div class="tl-header"><div class="tl-emoji">🎨</div><div class="tl-title">奧賽美術館 <small style="font-weight:normal;color:#999">Musée d'Orsay · M12 Solférino</small></div></div>
         <div class="tl-desc">入場至離館約 4.5 小時 · 寄放背包，★ 入口金色大鐘記得拍照。</div>
         <div class="tl-tip">📖 參考資料：<a href="https://french-nautilus.com/blog/voyage/musee-orsay/" target="_blank" style="color:#a07840">奧賽美術館完整攻略</a></div>
         <button class="orsay-toggle" onclick="toggleArtwork(this)">
@@ -1278,14 +1401,28 @@ body {
       <div class="tl-item">
         <div class="tl-time">18:30</div>
         <div class="tl-dot"></div>
-        <div class="tl-header"><div class="tl-emoji">🍽️</div><div class="tl-title">塞納河畔晚餐</div></div>
-        <div class="tl-desc">奧賽步行10分鐘到遊船碼頭，附近有許多河畔餐廳。</div>
+        <div class="tl-header"><div class="tl-emoji">🍽️</div><div class="tl-title">塞納河畔晚餐 ⚠️ 待選餐廳 <small style="font-weight:normal;color:#999">Quai d'Orsay · Pont de l'Alma</small></div></div>
+        <div class="tl-desc">
+          ⚠️ <b>尚未選定餐廳，出發前請確認</b><br>
+          📍 地點：奧賽→遊船碼頭沿途，<b>Quai d'Orsay</b> 或 <b>Pont de l'Alma</b> 周邊<br>
+          💡 建議選可以坐下慢慢吃的餐廳（20:30 遊船前留 1.5 小時）<br>
+          🍷 選項：河畔 Brasserie、鴨腿料理、法式牛排館
+        </div>
       </div>
       <div class="tl-item">
         <div class="tl-time">20:30</div>
         <div class="tl-dot dot-key"></div>
-        <div class="tl-header"><div class="tl-emoji">🚢</div><div class="tl-title">塞納河遊船出發</div></div>
-        <div class="tl-desc">從河面仰望巴黎，鐵塔、羅浮宮、巴黎聖母院全部從船上欣賞。</div>
+        <div class="tl-header"><div class="tl-emoji">🚢</div><div class="tl-title">塞納河遊船出發 <small style="font-weight:normal;color:#999">Croisière sur la Seine</small></div></div>
+        <div class="tl-desc">約 1–1.5 小時，沿途景點：<br>
+          🗼 艾菲爾鐵塔 <small>Tour Eiffel</small> →
+          🌉 比爾克姆橋 <small>Pont de Bir-Hakeim</small>（婚紗取景地）→
+          🌉 亞歷山大三世橋 <small>Pont Alexandre III</small>（巴黎最美橋）→
+          🎨 奧賽美術館正面 <small>Musée d'Orsay</small> →
+          🏛️ 羅浮宮河岸長廊 <small>Musée du Louvre</small> →
+          🌉 新橋 <small>Pont Neuf</small>（巴黎最古老的橋）→
+          ⛪ <b>巴黎聖母院</b> <small>Notre-Dame de Paris</small>（整修後全新外觀，從水面看側面玫瑰窗角度最美）→ 折返<br>
+          ✨ 22:00 整點閃燈時船會回到鐵塔附近，時機完美
+        </div>
       </div>
       <div class="tl-item">
         <div class="tl-time">22:00</div>
@@ -1318,20 +1455,20 @@ body {
       <div class="tl-item">
         <div class="tl-time">11:30</div>
         <div class="tl-dot"></div>
-        <div class="tl-header"><div class="tl-emoji">🚉</div><div class="tl-title">步行至 Champ de Mars · 搭 RER C</div></div>
-        <div class="tl-desc">從公寓步行10分鐘到 Champ de Mars Tour Eiffel 站，RER C直達凡爾賽，約45分鐘。</div>
+        <div class="tl-header"><div class="tl-emoji">🚉</div><div class="tl-title">步行至戰神廣場站 · 搭 RER C <small style="font-weight:normal;color:#999">Champ de Mars-Tour Eiffel → Versailles-Rive Gauche</small></div></div>
+        <div class="tl-desc">從公寓步行10分鐘到 Champ de Mars-Tour Eiffel 站（RER C），直達 Versailles-Rive Gauche，約45分鐘。</div>
       </div>
       <div class="tl-item">
         <div class="tl-time">13:00</div>
         <div class="tl-dot dot-key"></div>
-        <div class="tl-header"><div class="tl-emoji">👑</div><div class="tl-title">凡爾賽宮入場 · 先衝鏡廳</div></div>
-        <div class="tl-desc">鏡廳 → 國王套房 → 王后套房 → 禮拜堂，預計3小時。</div>
+        <div class="tl-header"><div class="tl-emoji">👑</div><div class="tl-title">凡爾賽宮入場 · 先衝鏡廳 <small style="font-weight:normal;color:#999">Château de Versailles</small></div></div>
+        <div class="tl-desc">鏡廳（Galerie des Glaces）→ 國王套房（Grands Appartements du Roi）→ 王后套房（Appartements de la Reine）→ 禮拜堂（Chapelle Royale），預計3小時。</div>
         <div class="tl-tip">⚠️ 出發前一週看天氣再訂票（chateauversailles.fr），選13:00 Passport with Timed Entry</div>
       </div>
       <div class="tl-item">
         <div class="tl-time">16:00</div>
         <div class="tl-dot"></div>
-        <div class="tl-header"><div class="tl-emoji">🌿</div><div class="tl-title">凡爾賽花園 · 大運河</div></div>
+        <div class="tl-header"><div class="tl-emoji">🌿</div><div class="tl-title">凡爾賽花園 · 大運河 <small style="font-weight:normal;color:#999">Jardins de Versailles · Grand Canal</small></div></div>
         <div class="tl-desc">租高爾夫球車或到大運河划船，不用走死自己。建議找陰涼處休息。</div>
       </div>
       <div class="tl-item">
@@ -1343,7 +1480,7 @@ body {
       <div class="tl-item">
         <div class="tl-time">20:00</div>
         <div class="tl-dot"></div>
-        <div class="tl-header"><div class="tl-emoji">🌟</div><div class="tl-title">香榭麗舍大道散步 + 凱旋門外觀</div></div>
+        <div class="tl-header"><div class="tl-emoji">🌟</div><div class="tl-title">香榭麗舍大道散步 + 凱旋門外觀 <small style="font-weight:normal;color:#999">Avenue des Champs-Élysées · Arc de Triomphe</small></div></div>
         <div class="tl-desc">傍晚涼爽後漫步香榭麗舍，凱旋門外觀拍照（不登頂）。<br>視體力決定，累了就直接回家。</div>
       </div>
     </div>
@@ -1367,44 +1504,65 @@ body {
       <div class="day-hero-info">
         <div class="day-hero-title">杜樂麗花園 · 羅浮宮</div>
         <div class="day-hero-stay">🏠 Dupleix Airbnb · 15區</div>
-        <div class="day-hero-tags"><span class="tag tag-blue">週五夜間羅浮宮</span><span class="tag tag-green">杜樂麗花園</span><span class="tag tag-gold">⏰ 起床 10:00</span></div>
+        <div class="day-hero-tags"><span class="tag tag-blue">週五夜間羅浮宮</span><span class="tag tag-green">🎡 夏日園遊會</span><span class="tag tag-gold">⏰ 起床 09:30</span></div>
       </div>
     </div>
     <div class="timeline">
       <div class="tl-item">
-        <div class="tl-time">10:00</div>
+        <div class="tl-time">09:30</div>
         <div class="tl-dot"></div>
         <div class="tl-header"><div class="tl-emoji">⏰</div><div class="tl-title">起床 · 梳化準備</div></div>
-        <div class="tl-desc">預留 1.5 小時梳化，12:00 出門。體力全留給羅浮宮。</div>
+        <div class="tl-desc">預留 1.5 小時梳化，11:00 出門。</div>
       </div>
       <div class="tl-item">
-        <div class="tl-time">12:00</div>
+        <div class="tl-time">11:00</div>
         <div class="tl-dot"></div>
         <div class="tl-header"><div class="tl-emoji">🚇</div><div class="tl-title">出發 · Line 6 → Line 1 → Palais Royal</div></div>
-        <div class="tl-desc">Dupleix（Line 6）→ Charles de Gaulle-Étoile 換 Line 1 → Palais Royal-Musée du Louvre，約 25–30 分鐘。</div>
+        <div class="tl-desc">
+          Dupleix（M6）→ Charles de Gaulle-Étoile 換 M1 → Palais Royal-Musée du Louvre，約 25–30 分鐘。<br>
+          📸 <b>M6 高架橋美景提醒：</b>出發後第一站 Bir-Hakeim 過後地鐵升至高架橋，<b>右手邊即是艾菲爾鐵塔</b>，是巴黎最經典的地鐵風景，記得準備好手機拍照！
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+          <div style="flex:1;min-width:140px">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Panneau_Tour_Eiffel_Station_Bir_Hakeim_M%C3%A9tro_Paris_-_Paris_XV_%28FR75%29_-_2026-05-30_-_1.jpg/500px-Panneau_Tour_Eiffel_Station_Bir_Hakeim_M%C3%A9tro_Paris_-_Paris_XV_%28FR75%29_-_2026-05-30_-_1.jpg" alt="Bir-Hakeim 站指標" loading="lazy" style="width:100%;border-radius:8px">
+            <div style="font-size:11px;color:#999;margin-top:4px;text-align:center">Bir-Hakeim 站月台指標（2026.05）</div>
+          </div>
+          <div style="flex:1;min-width:140px">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Bir-Hakeim_Bridge_and_Eiffel_Tower%2C_Paris.jpg/500px-Bir-Hakeim_Bridge_and_Eiffel_Tower%2C_Paris.jpg" alt="比爾克姆橋與鐵塔" loading="lazy" style="width:100%;border-radius:8px">
+            <div style="font-size:11px;color:#999;margin-top:4px;text-align:center">高架橋視角的艾菲爾鐵塔</div>
+          </div>
+        </div>
       </div>
       <div class="tl-item">
-        <div class="tl-time">12:30</div>
+        <div class="tl-time">11:30</div>
         <div class="tl-dot dot-key"></div>
-        <div class="tl-header"><div class="tl-emoji">🍳</div><div class="tl-title">早午餐 · 杜樂麗花園附近</div></div>
-        <div class="tl-desc">羅浮宮旁的咖啡館悠閒吃早午餐，步行距離就是羅浮宮入口。</div>
-      </div>
-      <div class="tl-item">
-        <div class="tl-time">13:30</div>
-        <div class="tl-dot"></div>
-        <div class="tl-header"><div class="tl-emoji">🌳</div><div class="tl-title">杜樂麗花園散步</div></div>
-        <div class="tl-desc">法式幾何園林，噴水池旁找椅子坐下曬太陽休息，輕鬆熱身不消耗體力。</div>
+        <div class="tl-header"><div class="tl-emoji">🎡</div><div class="tl-title">夏日園遊會 · 杜樂麗花園 <small style="font-weight:normal;color:#999">Fête des Tuileries · Jardin des Tuileries</small></div></div>
+        <div class="tl-desc">
+          🗓️ 季節限定 6/20–8/23，入場免費，遊樂設施另付費<br>
+          🕐 開放時間 11:00–23:45（夏季延長至午夜）<br>
+          🎡 摩天輪 · 天女散花 · 旋轉木馬 · Churros 攤販<br>
+          🍟 午餐在園遊會攤販解決（Churros、可麗餅、炸物等）<br>
+          ⏱ 預計玩 2 小時，14:00 前結束前往羅浮宮
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/F%C3%AAte_foraine_des_Tuileries_seen_from_a_Ferris_Wheel_3.jpg/500px-F%C3%AAte_foraine_des_Tuileries_seen_from_a_Ferris_Wheel_3.jpg" style="width:48%;border-radius:8px;object-fit:cover;max-height:160px" loading="lazy" alt="夏日園遊會摩天輪" onerror="this.style.display='none'">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Fountain_in_the_Tuileries_Garden.jpg/500px-Fountain_in_the_Tuileries_Garden.jpg" style="width:48%;border-radius:8px;object-fit:cover;max-height:160px" loading="lazy" alt="杜樂麗花園噴泉" onerror="this.style.display='none'">
+          </div>
+        </div>
       </div>
       <div class="tl-item">
         <div class="tl-time">14:30</div>
         <div class="tl-dot"></div>
-        <div class="tl-header"><div class="tl-emoji">🏛️</div><div class="tl-title">羅浮宮 · 抵達</div></div>
-        <div class="tl-desc">從 Carrousel du Louvre 地下商場入口進入（M1/M7 Palais Royal 站 6號出口直通），排隊約 15–25 分鐘，比金字塔快很多。預先下載官方中文地圖。</div>
+        <div class="tl-header"><div class="tl-emoji">🏛️</div><div class="tl-title">羅浮宮 · 抵達 <small style="font-weight:normal;color:#999">Musée du Louvre · M1/M7 Palais Royal</small></div></div>
+        <div class="tl-desc">從 Carrousel du Louvre 地下商場入口進入（M1/M7 Palais Royal 站 6號出口直通），排隊約 15–25 分鐘，比金字塔快很多。預先下載官方中文地圖。
+          <div style="margin-top:10px">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Louvre_Museum_Wikimedia_Commons.jpg/500px-Louvre_Museum_Wikimedia_Commons.jpg" style="width:100%;border-radius:8px;object-fit:cover;max-height:180px" loading="lazy" alt="羅浮宮玻璃金字塔" onerror="this.style.display='none'">
+          </div>
+        </div>
       </div>
       <div class="tl-item">
         <div class="tl-time">15:00</div>
         <div class="tl-dot dot-key"></div>
-        <div class="tl-header"><div class="tl-emoji">🏛️</div><div class="tl-title">羅浮宮入場 ✅ 已訂</div></div>
+        <div class="tl-header"><div class="tl-emoji">🏛️</div><div class="tl-title">羅浮宮入場 ✅ 已訂 <small style="font-weight:normal;color:#999">Musée du Louvre</small></div></div>
         <div class="tl-tip">⚠️ 週五延長至 21:45，各展廳 21:30 清場。蒙娜麗莎留到 19:00 後人潮散去再看。</div>
         <button class="orsay-toggle" onclick="toggleArtwork(this)">參觀路線 &amp; 必看作品 <span class="arrow">▼</span></button>
         <div class="artwork-panel">
@@ -1505,8 +1663,12 @@ body {
       <div class="tl-item">
         <div class="tl-time">21:45</div>
         <div class="tl-dot"></div>
-        <div class="tl-header"><div class="tl-emoji">🌙</div><div class="tl-title">離館 · 夜間金字塔</div></div>
-        <div class="tl-desc">夜晚玻璃金字塔打燈，出來的瞬間很美，記得拍照。<br>回程：Palais Royal（Line 1）→ Charles de Gaulle-Étoile 換 Line 6 → Dupleix，約 25–30 分鐘。</div>
+        <div class="tl-header"><div class="tl-emoji">🌙</div><div class="tl-title">離館 · 夜間金字塔 <small style="font-weight:normal;color:#999">Pyramide du Louvre</small></div></div>
+        <div class="tl-desc">夜晚玻璃金字塔打燈，出來的瞬間很美，記得拍照。<br><br>
+          🚇 <b>回程搭地鐵：</b>Palais Royal（M1）→ Charles de Gaulle-Étoile 換 M6 → Dupleix，約 25–30 分鐘<br>
+          📸 M6 回程經過 Passy → Bir-Hakeim 高架段，<b>左手邊是閃燈中的鐵塔</b>（22:00 後），夜景比白天更美！<br>
+          🚗 若腳太痠也可直接叫 Uber 回 Airbnb，約 15 分鐘，但就少了這段高架橋風景
+        </div>
       </div>
     </div>
   </div>
@@ -1534,24 +1696,45 @@ body {
         <div class="tl-time">10:30</div>
         <div class="tl-dot"></div>
         <div class="tl-header"><div class="tl-emoji">🚇</div><div class="tl-title">出門搭地鐵 · Line 6 → Line 8</div></div>
-        <div class="tl-desc">Dupleix → La Motte-Picquet Grenelle 換乘 Line 8 → Opéra，約 30–35 分鐘。</div>
+        <div class="tl-desc">
+          🚶 步行 5 分鐘 → <b>Dupleix 站（M6）</b><br>
+          🔵 搭 <b>M6 方向 Nation</b>，1 站 → <b>La Motte-Picquet–Grenelle 換乘</b><br>
+          🟣 換乘 <b>M8 方向 Créteil–Pointe du Lac</b>，6 站 → <b>Opéra 站</b><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;（經過 Invalides → Concorde → Madeleine → Opéra）<br>
+          🚶 出站走 <b>出口「Place de l'Opéra」</b>，出地面即見加尼葉宮正面<br>
+          ⏱ 總計約 30–35 分鐘（含步行）
+        </div>
       </div>
       <div class="tl-item">
         <div class="tl-time">11:30</div>
         <div class="tl-dot dot-key"></div>
-        <div class="tl-header"><div class="tl-emoji">🍳</div><div class="tl-title">早午餐 · 歌劇院附近</div></div>
-        <div class="tl-desc">歌劇院一帶 Brunch 選擇多，步行範圍內解決。</div>
+        <div class="tl-header"><div class="tl-emoji">☕</div><div class="tl-title">星巴克 Capucines · 打卡咖啡 <small style="font-weight:normal;color:#999">Starbucks · 3 Bd des Capucines · M8 Opéra 步行2分鐘</small></div></div>
+        <div class="tl-desc">19世紀建築改建，水晶吊燈、天花板壁畫、黃銅欄杆，巴黎最美星巴克。不用買歌劇院門票即可進入。</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+          <div style="flex:1;min-width:140px">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiDBb0DzuR4HrweRQz7IP4MUnVX9ZQc1ou-bLZg1W2NwEyFxz7N-T05ed4g116BDR76Xyy6IoSgfOchlbvqqOnpNQ_6dmxfcyJvDa5DjQQ58EsbyZQZMhdwf_6oVdAGHamXq5ZrRlrzrbpd_oP12fMC_UO1hg_woLu0QYhN-tO2LDeZ1Y5h1eudzIju-cil/w640-h480/IMG_8204.JPEG" alt="Starbucks Capucines 外觀" loading="lazy" style="width:100%;border-radius:8px">
+            <div style="font-size:11px;color:#999;margin-top:4px;text-align:center">外觀</div>
+          </div>
+          <div style="flex:1;min-width:140px">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhr_zWMmn_19U7GJcY-FnbMUyw61p4mkKzkRZWXjSDHDiC5dl33EYi6WoRicSdVJU56kutqkw-UQsSL9im8HQ5hsoQzNIKu-Pjikwhmo0_C3w4VXnB62Ll-_uNA82qc8BcbSz1zbSa-3nHC_3NlGaPrZhdFQkEsRc3jEl0V2Cx475xhRJMy2wW0Zr8mEUCa/s4618/IMG_8171.JPEG" alt="Starbucks Capucines 水晶吊燈" loading="lazy" style="width:100%;border-radius:8px">
+            <div style="font-size:11px;color:#999;margin-top:4px;text-align:center">內部水晶吊燈</div>
+          </div>
+          <div style="flex:1;min-width:140px">
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjf5gab1yK3WkyjW3ujlt93KP0KNndjni88IEWJkW5fGJf-xNzJiEaG5GcVNYctHakT7iSmbx3FhtjyUu90foPdL_RywSEKnbMABs2ExrEMUctGLZ_D5yfOY0BFO7nCrah9glIWaxCkKYMvZX35Ij8d4WufTFNHf0r2sEBeuiz3UjPbbsCt_egxwQAIL-k2/s4032/IMG_8161.JPEG" alt="Starbucks Capucines 天花板壁畫" loading="lazy" style="width:100%;border-radius:8px">
+            <div style="font-size:11px;color:#999;margin-top:4px;text-align:center">19世紀天花板壁畫</div>
+          </div>
+        </div>
       </div>
       <div class="tl-item">
         <div class="tl-time">13:00</div>
         <div class="tl-dot dot-key"></div>
-        <div class="tl-header"><div class="tl-emoji">🎭</div><div class="tl-title">巴黎歌劇院 · 加尼葉宮參觀</div></div>
+        <div class="tl-header"><div class="tl-emoji">🎭</div><div class="tl-title">巴黎歌劇院參觀 <small style="font-weight:normal;color:#999">Palais Garnier · M8 Opéra</small></div></div>
         <div class="tl-desc">《歌劇魅影》場景原型，金碧輝煌的大廳和大理石樓梯。預計 2 小時。</div>
       </div>
       <div class="tl-item">
         <div class="tl-time">15:00</div>
         <div class="tl-dot dot-key"></div>
-        <div class="tl-header"><div class="tl-emoji">🛍️</div><div class="tl-title">拉法葉百貨 · 奧斯曼本店（逛到關門）</div></div>
+        <div class="tl-header"><div class="tl-emoji">🛍️</div><div class="tl-title">拉法葉百貨 · 奧斯曼本店 <small style="font-weight:normal;color:#999">Galeries Lafayette Haussmann · M9 Chaussée d'Antin-La Fayette</small></div></div>
         <div class="tl-desc">步行 3 分鐘。精品採買，拉法葉週一至週六 20:30 關門。<br>記得向店員索取退稅單（Tax Free），單店消費滿 €100.01 可退稅。</div>
       </div>
       <div class="tl-item">
@@ -1561,11 +1744,15 @@ body {
         <div class="tl-desc">拉法葉 9 樓頂樓露台免費，俯瞰巴黎全景，是免費的絕佳觀景台。</div>
       </div>
       <div class="tl-item">
-        <div class="tl-time">16:00</div>
-        <div class="tl-dot"></div>
-        <div class="tl-header"><div class="tl-emoji">🧾</div><div class="tl-title">辦理退稅 · 收拾行李</div></div>
-        <div class="tl-desc">集中退稅單，明天機場出關前辦理退稅。回公寓整理行李。</div>
-        <div class="tl-tip">⚠️ 退稅在機場出關後的 Pablo 退稅機器辦理，預留充足時間</div>
+        <div class="tl-time">20:30</div>
+        <div class="tl-dot dot-warn"></div>
+        <div class="tl-header"><div class="tl-emoji">🚗</div><div class="tl-title">叫 Uber 回公寓 · 打包行李</div></div>
+        <div class="tl-desc">
+          拉法葉逛到 20:30，在門口叫 Uber 回 Airbnb，約 15 分鐘。<br>
+          📦 回到公寓把所有行李打包完畢，整理好退稅單夾在一起<br>
+          💡 退稅明天在機場出關後的 <b>Pablo 機器</b> 辦理，今晚只要把單據整理好即可<br>
+          ⚠️ 明天 <b>07:30 出發</b>，今晚務必 23:00 前就寢
+        </div>
       </div>
     </div>
   </div>
@@ -1584,17 +1771,49 @@ body {
     </div>
     <div class="timeline">
       <div class="tl-item">
-        <div class="tl-time">早上</div>
+        <div class="tl-time">06:00</div>
         <div class="tl-dot"></div>
         <div class="tl-header"><div class="tl-emoji">☕</div><div class="tl-title">最後的巴黎早晨</div></div>
         <div class="tl-desc">一杯咖啡、一個可頌。記住這個城市的味道，帶著回憶踏上歸途。</div>
       </div>
       <div class="tl-item">
-        <div class="tl-time">08:00</div>
+        <div class="tl-time">07:30</div>
         <div class="tl-dot dot-key"></div>
-        <div class="tl-header"><div class="tl-emoji">🚗</div><div class="tl-title">叫車前往戴高樂機場T2</div></div>
-        <div class="tl-desc">從 Airbnb 叫車出發，預留充足時間辦退稅與過安檢。</div>
-        <div class="tl-tip">⚠️ 退稅在出關後的 Pablo 機器辦理，排隊可能需要30–60分鐘</div>
+        <div class="tl-header"><div class="tl-emoji">🚗</div><div class="tl-title">叫 Uber Van · 前往戴高樂機場T2 <small style="font-weight:normal;color:#999">Aéroport Paris-Charles de Gaulle T2</small></div></div>
+        <div class="tl-desc">
+          行李已打包，直接出門叫 Uber Van（3 大箱），約 45–50 分鐘抵達 CDG T2<br>
+          🛬 預計 <b>08:20 抵達機場</b>（起飛前約 5 小時）
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">08:20</div>
+        <div class="tl-dot"></div>
+        <div class="tl-header"><div class="tl-emoji">🧳</div><div class="tl-title">報到 · 托運行李 <small style="font-weight:normal;color:#999">Check-in · Enregistrement</small></div></div>
+        <div class="tl-desc">找上海航空（FM）報到櫃台，托運行李，拿登機證。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">09:00</div>
+        <div class="tl-dot dot-warn"></div>
+        <div class="tl-header"><div class="tl-emoji">🧾</div><div class="tl-title">退稅辦理 · 安檢前完成 <small style="font-weight:normal;color:#999">Détaxe · Pablo</small></div></div>
+        <div class="tl-desc">
+          ⚠️ 退稅要在 <b>安檢前</b> 辦理，步驟：<br>
+          1️⃣ 找 <b>Pablo 退稅機器</b>（在安檢前大廳，跟著「Détaxe」指標走）<br>
+          2️⃣ 掃描退稅單上的條碼，機器自動驗證<br>
+          3️⃣ 若需要海關蓋章（金額大），找海關人員人工蓋章<br>
+          💡 預留 <b>30–60 分鐘</b>，旺季排隊人多
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">10:30</div>
+        <div class="tl-dot"></div>
+        <div class="tl-header"><div class="tl-emoji">🛂</div><div class="tl-title">過安檢 · 出境移民局</div></div>
+        <div class="tl-desc">退稅辦完後過安檢，出境移民局蓋章。預留 30 分鐘。</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">11:00</div>
+        <div class="tl-dot"></div>
+        <div class="tl-header"><div class="tl-emoji">🛍️</div><div class="tl-title">免稅店 · 候機</div></div>
+        <div class="tl-desc">過關後逛免稅店，找登機門，從容候機。起飛前 45 分鐘到登機門。</div>
       </div>
       <div class="tl-item">
         <div class="tl-time">13:25</div>
@@ -1612,6 +1831,116 @@ body {
   </div>
 </div>
 
+<!-- ══════════ MEALS ══════════ -->
+<div class="section" id="meals">
+  <div style="padding: 16px 0 32px">
+    <div class="section-heading">🍽️ 每日餐食</div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;background:white;border-radius:14px;overflow:hidden;box-shadow:0 1px 10px rgba(0,0,0,0.07)">
+        <thead>
+          <tr style="background:#f5efe6;color:#1a3a5c">
+            <th style="padding:12px 14px;text-align:left;font-weight:700;width:90px">日期</th>
+            <th style="padding:12px 14px;text-align:left;font-weight:700">🌅 早餐</th>
+            <th style="padding:12px 14px;text-align:left;font-weight:700">☀️ 午餐</th>
+            <th style="padding:12px 14px;text-align:left;font-weight:700">🌙 晚餐</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-top:1px solid #f0e8dc">
+            <td style="padding:12px 14px;font-weight:700;color:#c8864a;white-space:nowrap">7/24<br><span style="font-weight:400;color:#aaa;font-size:11px">抵達</span></td>
+            <td style="padding:12px 14px;color:#888">✈️ 機上</td>
+            <td style="padding:12px 14px">Outlet / Val d'Europe 商場</td>
+            <td style="padding:12px 14px">Val d'Europe 商場<br><span style="color:#888;font-size:11px">+ 超市買隔天迪士尼早餐</span></td>
+          </tr>
+          <tr style="border-top:1px solid #f0e8dc;background:#fdfaf7">
+            <td style="padding:12px 14px;font-weight:700;color:#c8864a;white-space:nowrap">7/25<br><span style="font-weight:400;color:#aaa;font-size:11px">🎂迪士尼</span></td>
+            <td style="padding:12px 14px">超市採買的麵包<br><span style="color:#888;font-size:11px">Moxy 房間吃</span></td>
+            <td style="padding:12px 14px">Disney 園內餐廳<br><span style="color:#888;font-size:11px">Adventure World</span></td>
+            <td style="padding:12px 14px">Disney 園內餐廳<br><span style="color:#888;font-size:11px">或回 Moxy 附近</span></td>
+          </tr>
+          <tr style="border-top:1px solid #f0e8dc">
+            <td style="padding:12px 14px;font-weight:700;color:#c8864a;white-space:nowrap">7/26<br><span style="font-weight:400;color:#aaa;font-size:11px">進市區</span></td>
+            <td style="padding:12px 14px">Moxy 早餐<br><span style="color:#888;font-size:11px">退房前悠閒吃</span></td>
+            <td style="padding:12px 14px">Val d'Europe 商場<br><span style="color:#888;font-size:11px">退房後帶行李吃</span></td>
+            <td style="padding:12px 14px">🧺 戰神廣場草坪野餐<br><span style="color:#888;font-size:11px">麵包・起司・火腿・紅酒</span></td>
+          </tr>
+          <tr style="border-top:1px solid #f0e8dc;background:#fdfaf7">
+            <td style="padding:12px 14px;font-weight:700;color:#c8864a;white-space:nowrap">7/27<br><span style="font-weight:400;color:#aaa;font-size:11px">蒙馬特</span></td>
+            <td style="padding:12px 14px;color:#888">—</td>
+            <td style="padding:12px 14px"><span style="color:#e07b39;font-weight:600">⚠️ 待選</span><br><span style="color:#888;font-size:11px">Rue Lepic / Rue des Abbesses</span></td>
+            <td style="padding:12px 14px;color:#888">—<br><span style="font-size:11px">Airbnb 附近自行解決</span></td>
+          </tr>
+          <tr style="border-top:1px solid #f0e8dc">
+            <td style="padding:12px 14px;font-weight:700;color:#c8864a;white-space:nowrap">7/28<br><span style="font-weight:400;color:#aaa;font-size:11px">💍婚紗</span></td>
+            <td style="padding:12px 14px"><span style="color:#e07b39;font-weight:600">⚠️ 待安排</span><br><span style="color:#888;font-size:11px">03:45 起梳化，需提前備妥</span></td>
+            <td style="padding:12px 14px">10:30 休息時補水補食<br><span style="color:#888;font-size:11px">在公寓或附近簡單吃</span></td>
+            <td style="padding:12px 14px"><span style="color:#e07b39;font-weight:600">⚠️ 待安排</span><br><span style="color:#888;font-size:11px">拍攝結束約 20:45</span></td>
+          </tr>
+          <tr style="border-top:1px solid #f0e8dc;background:#fdfaf7">
+            <td style="padding:12px 14px;font-weight:700;color:#c8864a;white-space:nowrap">7/29<br><span style="font-weight:400;color:#aaa;font-size:11px">奧賽+遊船</span></td>
+            <td style="padding:12px 14px">Airbnb 附近咖啡館<br><span style="color:#888;font-size:11px">悠閒早午餐，不設鬧鐘</span></td>
+            <td style="padding:12px 14px;color:#888">—<br><span style="font-size:11px">奧賽館內可補食</span></td>
+            <td style="padding:12px 14px"><span style="color:#e07b39;font-weight:600">⚠️ 待選</span><br><span style="color:#888;font-size:11px">Quai d'Orsay 周邊 · 18:30</span></td>
+          </tr>
+          <tr style="border-top:1px solid #f0e8dc">
+            <td style="padding:12px 14px;font-weight:700;color:#c8864a;white-space:nowrap">7/30<br><span style="font-weight:400;color:#aaa;font-size:11px">凡爾賽</span></td>
+            <td style="padding:12px 14px"><span style="color:#e07b39;font-weight:600">⚠️ 待安排</span></td>
+            <td style="padding:12px 14px"><span style="color:#e07b39;font-weight:600">⚠️ 待安排</span><br><span style="color:#888;font-size:11px">凡爾賽宮內餐廳 or 附近</span></td>
+            <td style="padding:12px 14px"><span style="color:#e07b39;font-weight:600">⚠️ 待安排</span><br><span style="color:#888;font-size:11px">香榭麗舍 / 凱旋門附近</span></td>
+          </tr>
+          <tr style="border-top:1px solid #f0e8dc;background:#fdfaf7">
+            <td style="padding:12px 14px;font-weight:700;color:#c8864a;white-space:nowrap">7/31<br><span style="font-weight:400;color:#aaa;font-size:11px">羅浮宮</span></td>
+            <td style="padding:12px 14px;color:#888">—</td>
+            <td style="padding:12px 14px">🎡 杜樂麗園遊會攤販<br><span style="color:#888;font-size:11px">Churros・可麗餅・炸物</span></td>
+            <td style="padding:12px 14px">羅浮宮館內補食 or 離館後<br><span style="color:#888;font-size:11px">21:45 離館，附近找</span></td>
+          </tr>
+          <tr style="border-top:1px solid #f0e8dc">
+            <td style="padding:12px 14px;font-weight:700;color:#c8864a;white-space:nowrap">8/1<br><span style="font-weight:400;color:#aaa;font-size:11px">歌劇院</span></td>
+            <td style="padding:12px 14px;color:#888">—</td>
+            <td style="padding:12px 14px">☕ 星巴克 Capucines<br><span style="color:#888;font-size:11px">11:30 · Brunch</span></td>
+            <td style="padding:12px 14px"><span style="color:#e07b39;font-weight:600">⚠️ 待安排</span><br><span style="color:#888;font-size:11px">20:30 Uber 回家前</span></td>
+          </tr>
+          <tr style="border-top:1px solid #f0e8dc;background:#fdfaf7">
+            <td style="padding:12px 14px;font-weight:700;color:#c8864a;white-space:nowrap">8/2<br><span style="font-weight:400;color:#aaa;font-size:11px">返台</span></td>
+            <td style="padding:12px 14px">最後的巴黎早晨<br><span style="color:#888;font-size:11px">Airbnb 附近咖啡館</span></td>
+            <td style="padding:12px 14px">✈️ 機場免稅區</td>
+            <td style="padding:12px 14px;color:#888">✈️ 機上</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:16px;background:#fff8f0;border-radius:10px;padding:14px 16px;font-size:12px;color:#888;line-height:1.8">
+      ⚠️ 標橘色為尚未決定，出發前補齊即可<br>
+      — 表示該餐不特別安排，視當天狀況隨機解決
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ CHECKLIST ══════════ -->
+<div class="section" id="checklist">
+  <div style="padding:16px 0 32px">
+    <div class="section-heading">✅ 出發前印出清單</div>
+
+    <!-- 進度條 -->
+    <div style="background:white;border-radius:12px;padding:16px 18px;box-shadow:0 1px 10px rgba(0,0,0,0.07);margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-size:13px;font-weight:700;color:#1a3a5c">整體進度</span>
+        <span id="cl-txt" style="font-size:12px;color:#aaa">0 / 0 完成</span>
+      </div>
+      <div style="background:#f0e8dc;border-radius:99px;height:8px;overflow:hidden">
+        <div id="cl-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#c8864a,#e8a96a);border-radius:99px;transition:width 0.3s"></div>
+      </div>
+    </div>
+
+    <!-- 分類 -->
+    <div id="cl-sections"></div>
+
+    <div style="text-align:center;margin-top:24px">
+      <button onclick="clResetAll()" style="background:none;border:1px solid #ddd;color:#aaa;font-size:12px;padding:8px 18px;border-radius:20px;cursor:pointer">全部重置</button>
+    </div>
+  </div>
+</div>
+
 </div><!-- end main -->
 
 <footer style="text-align:center;padding:40px 20px;color:#bbb;font-size:12px;letter-spacing:2px">
@@ -1619,6 +1948,86 @@ body {
 </footer>
 
 <script>
+// ── Checklist ──
+function clLoad() {
+  document.querySelectorAll('.cl-item input[type=checkbox]').forEach(cb => {
+    const v = localStorage.getItem('cl_' + cb.dataset.id);
+    if (v === '1') { cb.checked = true; cb.closest('.cl-item').classList.add('cl-done'); }
+  });
+  clUpdateProgress();
+}
+function clToggle(cb) {
+  const item = cb.closest('.cl-item');
+  if (cb.checked) { item.classList.add('cl-done'); localStorage.setItem('cl_' + cb.dataset.id, '1'); }
+  else { item.classList.remove('cl-done'); localStorage.removeItem('cl_' + cb.dataset.id); }
+  clUpdateProgress();
+}
+function clUpdateProgress() {
+  const all = document.querySelectorAll('.cl-item input[type=checkbox]');
+  const done = document.querySelectorAll('.cl-item input[type=checkbox]:checked');
+  const pct = all.length ? Math.round(done.length / all.length * 100) : 0;
+  const bar = document.getElementById('cl-bar');
+  const txt = document.getElementById('cl-txt');
+  if (bar) bar.style.width = pct + '%';
+  if (txt) txt.textContent = done.length + ' / ' + all.length + ' 完成';
+}
+function clResetAll() {
+  if (!confirm('確定要清除所有勾選嗎？')) return;
+  document.querySelectorAll('.cl-item input[type=checkbox]').forEach(cb => {
+    cb.checked = false;
+    cb.closest('.cl-item').classList.remove('cl-done');
+    localStorage.removeItem('cl_' + cb.dataset.id);
+  });
+  clUpdateProgress();
+}
+
+const CL_DATA = [
+  { title: '✈️ 交通', icon: '✈️', items: [
+    { id: 'flight_out',  text: '去程機票', note: '含航班號、座位、起飛時間' },
+    { id: 'flight_back', text: '回程機票', note: '含航班號、座位、起飛時間' },
+    { id: 'pickup_out',  text: '竹北→桃園 機場接送確認單', note: '7/23 14:50 出發，含司機聯絡電話' },
+    { id: 'pickup_back', text: '桃園→竹北 回程接送確認單', note: '8/3 抵達後，待訂後補印' },
+  ]},
+  { title: '🏨 住宿', icon: '🏨', items: [
+    { id: 'hotel_moxy',   text: 'Moxy Val d\'Europe 訂房確認', note: '7/24–7/26，含 check-in 時間' },
+    { id: 'hotel_airbnb', text: 'Airbnb 12 Rue de Lourmel 確認單', note: '⭐最重要：門鎖密碼 / 鑰匙領取方式 / 房東電話' },
+  ]},
+  { title: '🎟️ 門票 QR Code', icon: '🎟️', items: [
+    { id: 'ticket_eiffel',   text: '艾菲爾鐵塔二樓 + 香檳', note: '7/26 20:00' },
+    { id: 'ticket_disney',   text: '巴黎迪士尼一日兩園票', note: '7/25' },
+    { id: 'ticket_louvre',   text: '羅浮宮', note: '7/31 15:00 入場' },
+    { id: 'ticket_orsay',    text: '奧賽美術館', note: '7/29 13:30，待訂後補印' },
+    { id: 'ticket_seine',    text: '塞納河遊船', note: '7/29 20:30，待訂後補印' },
+    { id: 'ticket_opera',    text: '巴黎歌劇院加尼葉宮', note: '8/1 13:00，待訂後補印' },
+    { id: 'ticket_versailles', text: '凡爾賽宮', note: '7/30，出發前一週訂，待訂後補印' },
+  ]},
+  { title: '💍 婚紗', icon: '💍', items: [
+    { id: 'wedding_contract', text: '攝影師合約 / 確認單', note: '含 7/28 碰面時間、地點、攝影師聯絡電話' },
+  ]},
+  { title: '🛡️ 其他備份', icon: '🛡️', items: [
+    { id: 'insurance',    text: '旅遊保險證明', note: '含緊急聯絡電話、理賠說明' },
+    { id: 'passport_copy', text: '兩人護照影本', note: '遺失時補辦用，與正本分開收' },
+    { id: 'card_hotline', text: '信用卡海外掛失電話清單', note: '各卡公司國際緊急電話' },
+  ]},
+];
+
+function clRender() {
+  const container = document.getElementById('cl-sections');
+  if (!container) return;
+  container.innerHTML = CL_DATA.map(group => `
+    <div class="cl-group">
+      <div class="cl-group-title">${group.title}</div>
+      ${group.items.map(item => `
+        <div class="cl-item" onclick="event.stopPropagation()">
+          <input type="checkbox" data-id="${item.id}" id="cb_${item.id}" onchange="clToggle(this)">
+          <label for="cb_${item.id}">${item.text}<small>${item.note}</small></label>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+  clLoad();
+}
+
 function showBookingTab(tab, el) {
   document.getElementById('booking-done').style.display = tab === 'done' ? '' : 'none';
   document.getElementById('booking-pending').style.display = tab === 'pending' ? '' : 'none';
@@ -1644,13 +2053,14 @@ function switchTab(id, el) {
     el.classList.add('active');
   } else {
     const tabs = document.querySelectorAll('.tab');
-    const map = {overview:0,d723:1,d724:2,d725:3,d726:4,d727:5,d728:6,d729:7,d730:8,d731:9,d801:10,d802:11};
+    const map = {overview:0,d723:1,d724:2,d725:3,d726:4,d727:5,d728:6,d729:7,d730:8,d731:9,d801:10,d802:11,meals:12,checklist:13};
     if (map[id] !== undefined) tabs[map[id]].classList.add('active');
   }
   const tabEl = document.querySelector('.tab.active');
   if (tabEl) tabEl.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
+document.addEventListener('DOMContentLoaded', clRender);
 </script>
 </body>
 </html>
